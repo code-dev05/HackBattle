@@ -3,10 +3,14 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import uplodfileform
+from random import randint
 
 user_name=None
 
 # Create your views here.
+def base(request):
+    return render(request, 'base.html', {})
+
 def home(request):
     form = uplodfileform()
     if request.method == "POST":
@@ -24,12 +28,14 @@ def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        user_name = username
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            user_name= username
+            
             return redirect('home')
         else:
+            user_name = None
             print("works")
             return redirect('login')
     else:
@@ -59,9 +65,7 @@ def file_upload(request):
 
 def handle_file(f):
     import dropbox
-    dbx = dropbox.Dropbox("sl.BmYrGRUJSvIosQVs6YtxSlHjA7jByYi8f5Owz-T_MsSKkJgAyK3-RX4yE_gmS1X2kSEoCUcf9YLnX7iI5bGBYoh5F70IfKzwA6BpaTuRlKGICadLkpT_WeoO57mcfh3ZZVz473dcXtzWYvGAlxOgTN4")
-
-   
+    dbx = dropbox.Dropbox("sl.Bmb8iT5vhBmN2qzEEDvdMSh-MUqfP07RXmmUZDAZHZ2h0Cp61QLqD6__hJSqrXIufrdBcEjD8UTBipcVDBQYmUenX9wxZT86O_7fRegqXzZG4vruxNWQh2WPXIWyIAUpmRl55bWPP7gjtMczKOvSAxA")
    
     with open('static/upload/' + f.name, 'wb+') as dest:
         for chunk in f.chunks():
@@ -69,8 +73,7 @@ def handle_file(f):
 
     file_from = 'C:/Users/devan/Data/Hackathon Projects/HackBattle/gameHighlighter/static/upload/' + f.name
 
-    file_to = '/hello/video100.mp4'
+    file_to = f'/hello/{user_name}-{randint(0, 10000)}.mp4'
     
-
     ft = open(file_from, 'rb')
     dbx.files_upload(ft.read(), file_to)
