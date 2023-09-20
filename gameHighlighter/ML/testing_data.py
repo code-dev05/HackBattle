@@ -1,23 +1,28 @@
-import cv2
-import matplotlib.pyplot as plt
 import tensorflow as tf
-import numpy as np
+import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-# Load the trained model
-model_path = r'imageclassifier.h5'
+# Load the saved model
+model_path = r'C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data\imageclassifier.keras'
 model = tf.keras.models.load_model(model_path)
 
-for i in range(1,100):
-    img = cv2.imread(r"Bodyshot\ ({}).png".format(i))
+# Evaluate the model on the test set
+test_dir = r"C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data"
 
-    # Resize and preprocess the image
-    resize = tf.image.resize(img, (256, 256))
-    input_data = np.expand_dims(resize / 255, 0)  # Preprocess the image and expand dimensions for batch
+test_datagen = ImageDataGenerator(rescale=1.0 / 255)
+batch_size = 8
+test_generator = test_datagen.flow_from_directory(
+    test_dir,
+    target_size=(256, 256),
+    batch_size=batch_size,
+    class_mode='categorical'  # Change to 'binary' for binary classification
+)
 
-    # Make predictions
-    predictions = model.predict(input_data)
+# Evaluate the model on the test data
+eval_result = model.evaluate(test_generator, verbose=1)
 
-    # Get the class with the highest probability
-    predicted_class = np.argmax(predictions)
+print("\nTest Loss:", eval_result[0])
+print("Test Accuracy:", eval_result[1])
 
-    print(f"Predicted class: {predicted_class}")
+# ~76% accuracy on training data
+# ~72% accuracy on testing data
