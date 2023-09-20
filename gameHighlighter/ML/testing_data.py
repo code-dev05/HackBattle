@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Load the saved model
-model_path = r'C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data\imageclassifier.keras'
+model_path = 'imageclassifier.keras'
 model = tf.keras.models.load_model(model_path)
 
 # Evaluate the model on the test set
-test_dir = r"C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data"
+test_dir = "Training Data"
 
 test_datagen = ImageDataGenerator(rescale=1.0 / 255)
 batch_size = 8

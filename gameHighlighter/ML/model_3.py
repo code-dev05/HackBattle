@@ -1,10 +1,12 @@
 import tensorflow as tf
+from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
 
 # Define the data directories
-train_dir = r'C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data'
+train_dir = 'Training Data'
 
 # Create an ImageDataGenerator for data augmentation and preprocessing
 train_datagen = ImageDataGenerator(
@@ -55,8 +57,6 @@ history = model.fit(
     verbose=1
 )
 
-import matplotlib.pyplot as plt
-
 # Plot training history (accuracy and loss)
 plt.figure(figsize=(12, 4))
 plt.subplot(1, 2, 1)
@@ -77,7 +77,7 @@ plt.tight_layout()
 plt.show()
 
 # # Evaluate the model on the test set
-# test_dir = r'C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Testing Data'
+# test_dir = 'Testing Data'
 #
 # test_datagen = ImageDataGenerator(rescale=1.0 / 255)
 #
@@ -96,4 +96,4 @@ plt.show()
 #
 
 # Save the model
-model.save(r'C:\Users\Lakshya Singh\Desktop\Hackathon - Hack Battle\Training Data\imageclassifier.keras')
+model.save('imageclassifier.keras')
