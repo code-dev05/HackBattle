@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import uplodfileform
 from random import randint
+from django.conf import settings
 
 user_name=None
 
@@ -66,12 +67,10 @@ def file_upload(request):
 def handle_file(f):
     import dropbox
     dbx = dropbox.Dropbox("sl.Bmb8iT5vhBmN2qzEEDvdMSh-MUqfP07RXmmUZDAZHZ2h0Cp61QLqD6__hJSqrXIufrdBcEjD8UTBipcVDBQYmUenX9wxZT86O_7fRegqXzZG4vruxNWQh2WPXIWyIAUpmRl55bWPP7gjtMczKOvSAxA")
-   
     with open('static/upload/' + f.name, 'wb+') as dest:
         for chunk in f.chunks():
             dest.write(chunk)
-
-    file_from = 'C:/Users/devan/Data/Hackathon Projects/HackBattle/gameHighlighter/static/upload/' + f.name
+    file_from = rf'{settings.BASE_DIR}\static\upload\{f.name}'
 
     file_to = f'/hello/{user_name}-{randint(0, 10000)}.mp4'
     
