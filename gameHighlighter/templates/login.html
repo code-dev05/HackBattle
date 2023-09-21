@@ -1,19 +1,31 @@
 {% extends "base.html" %}
 
+{% block body %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }} alert alert-warning alert-dismissible fade show" role="alert" {% endif %}>{{ message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock body %}
+
 {% block login %}
 <div class="login-container" id="login">
     <div class="top">
-        <span>Don't have an account? <a href="#" onclick="register()">Sign Up</a></span>
+        <span>Don't have an account? <a href="{% url 'register' %}">Sign Up</a></span>
         <header>Login</header>
     </div>
     <form action="" method=POST>
         {% csrf_token %}
         <div class="input-box">
-            <input type="text" class="input-field" placeholder="Username" name="username">
+            <input type="text" class="input-field" id="username" placeholder="Username" name="username">
             <i class="bx bx-user"></i>
         </div>
         <div class="input-box">
-            <input type="password" class="input-field" placeholder="Password" name="password">
+            <input type="password" class="input-field" id="password" placeholder="Password" name="password">
             <i class="bx bx-lock-alt"></i>
         </div>
         <div class="input-box">
@@ -21,10 +33,6 @@
         </div>
     </form>
     <div class="two-col">
-        <div class="one">
-            <input type="checkbox" id="login-check">
-            <label for="login-check"> Remember Me</label>
-        </div>
         <div class="two">
             <label><a href="#">Forgot password?</a></label>
         </div>

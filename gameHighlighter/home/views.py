@@ -1,10 +1,11 @@
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from .forms import uploadfileform
 from random import randint
 from django.conf import settings
+from django.contrib import messages
 
 user_name=None
 
@@ -33,16 +34,21 @@ def login_user(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            
             return redirect('home')
         else:
-            user_name = None
-            print("works")
-            return redirect('login')
-    else:
-        return render(request, 'login.html', {})
+            messages.warning(request, "Invalid username or password! Please try again")
+    return render(request, 'login.html')
 
-def register(request):
+def register_user(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        user = User.objects.create_user(username=username, password=password, first_name=first_name, last_name=last_name)
+        user.save()
+        login(request, user)
+        return redirect('home')
     return render(request, 'register.html', {})
 
 def logout_user(request):
