@@ -2,7 +2,7 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from .forms import uplodfileform
+from .forms import uploadfileform
 from random import randint
 from django.conf import settings
 
@@ -13,14 +13,14 @@ def base(request):
     return render(request, 'base.html', {})
 
 def home(request):
-    form = uplodfileform()
+    form = uploadfileform()
     if request.method == "POST":
-        form = uplodfileform(request.POST,request.FILES)
+        form = uploadfileform(request.POST,request.FILES)
         if form.is_valid():
             handle_file(request.FILES['file'])
         else:
-            form = uplodfileform()
-    return render(request, 'home.html', {'form': form})
+            form = uploadfileform()
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html', {})
@@ -51,7 +51,7 @@ def logout_user(request):
 
 def file_upload(request):
     if request.method == "POST":
-        form = uplodfileform(request.POST, request.FILES)
+        form = uploadfileform(request.POST, request.FILES)
         if form.is_valid():
             if "file" in request.FILES:
                 handle_file(request.FILES["file"])

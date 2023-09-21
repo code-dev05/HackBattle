@@ -1,10 +1,20 @@
 {% extends "base.html" %}
 {% block activehome %}active{% endblock activehome %}
 
-{% block body %}
-  <form action="" method=POST enctype="multipart/form-data">
+{% block fileform %}
+<div class="fileform">
+  <form action="{% url 'upload_file' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">upload</button>
+    <input type="hidden" name="csrfmiddlewaretoken"
+      value="1UFkINd9J1vZ8b6aRN4JAR42Mhxhi9oXrsjt6DgCbTh7sZpwIPcrgi9VkM9AgAL8">
+    <p>
+      <label for="file" class="drop-container" id="dropcontainer">
+        <span class="drop-title">Drop files here</span>
+        or
+        <input type="file" name="file" required="" id="id_file">
+      </label>
+    </p>
+    <button class="btn btn-primary" type="submit">Submit</button>
   </form>
-{% endblock body %}
+</div>
+{% endblock fileform %}
